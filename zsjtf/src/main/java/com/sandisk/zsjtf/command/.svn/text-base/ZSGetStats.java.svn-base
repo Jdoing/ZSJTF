@@ -1,0 +1,30 @@
+/*
+ * File: ZSGetStats.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import java.util.LinkedHashMap;
+
+import com.sandisk.zsjtf.JTFCommand;
+
+/** 
+ * ZSGetStats command class.
+ *
+ * ZSGetStats is not implemented yet
+ *
+ * return:
+ *   success:
+ *   failed: SERVER_ERROR %s | CLIENT_ERROR %s
+ */
+public class ZSGetStats extends JTFCommand
+{
+    public String execute()
+    {
+        return "SERVER_ERROR ZSGetStats is not implemented yet!";
+    }
+}

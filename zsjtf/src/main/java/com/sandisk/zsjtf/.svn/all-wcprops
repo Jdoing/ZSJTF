@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/schooner-trunk/!svn/ver/21636/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf
+END
+JTFCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/JTFCommand.java
+END
+JTFServerHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/JTFServerHandler.java
+END
+JTFCommandFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/JTFCommandFactory.java
+END
+JTFServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/JTFServer.java
+END
+JTFServerInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/JTFServerInitializer.java
+END

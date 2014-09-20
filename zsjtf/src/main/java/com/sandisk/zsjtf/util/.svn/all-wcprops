@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util
+END
+ByteBuffManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util/ByteBuffManager.java
+END
+NameIDMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util/NameIDMapper.java
+END
+ZSServiceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util/ZSServiceManager.java
+END
+MiscUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util/MiscUtils.java
+END
+ContainerManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/schooner-trunk/!svn/ver/21628/ht_delivery/qa/zsjtf/src/main/java/com/sandisk/zsjtf/util/ContainerManager.java
+END

@@ -10,7 +10,12 @@ package com.sandisk.zsjtf.command;
 
 import com.sandisk.zsjtf.JTFCommand;
 import com.sandisk.zsjtf.exception.JTFException;
+import com.sandisk.zsjtf.util.ContainerManager;
+import com.sandisk.zsjtf.util.NameIDMapper;
+import com.sandisk.zs.ZSContainer;
+import com.sandisk.zs.exception.ZSContainerException;
 import com.sandisk.zs.type.ContainerMode;
+import com.sandisk.zs.type.ContainerProperty;
 import com.sandisk.zs.type.DurabilityLevel;
 import com.sandisk.zs.type.OpenContainerMode;
 
@@ -50,18 +55,21 @@ public class ZSOpenContainer extends JTFCommand {
 	private OpenContainerMode openContainerMode;
 	private ContainerMode containerMode;
 
-	private String ZSAdapterName = "ZSContainerAdapter";
 	private String ZSCommandExecName = "ZSOpenContainerExec";
 
+	private ZSContainer container;
+	private ContainerProperty containerProps;
+	
 	public ZSOpenContainer(String rawCommand) throws JTFException {
 		super(rawCommand);
 		// TODO Auto-generated constructor stub
 
 		getProperties();
+		
 		setDurabilityLevel();
 		setContainerMode();
 		setOpenContainerMode();
-		
+
 	}
 
 	@Override
@@ -79,7 +87,48 @@ public class ZSOpenContainer extends JTFCommand {
 		// return handleClientErrorReturn(e);
 		// }
 
-		return null;
+		return this.zsCommandExec.Execute();
+	}
+
+	public void setContainerProperty(ContainerProperty containerProps){
+		this.containerProps = containerProps;
+	}
+	
+	public Object createZSEntry() throws ZSContainerException, JTFException {
+		
+		if (openContainerMode == null) {
+			/* Create a new container. */
+//			ContainerProperty containerProps = ContainerProperty
+//					.getDefaultProperty();
+			if(containerProps == null){
+				throw new JTFException("ContainerProperty must not be null");
+			}
+			
+			containerProps.setFifoMode(isFIFO);
+			containerProps.setPersistent(isPersistent);
+			containerProps.setEvicting(isEvicting);
+			containerProps.setWritethru(isWritethru);
+			containerProps.setSize(containerSize);
+			containerProps.setShardNumber(shardNumber);
+			containerProps.setDurabilityLevel(durabilityLevel);
+			containerProps.setContainerMode(containerMode);
+
+			container = new ZSContainer(containerName, containerProps);
+			// container.create();
+			containerID = container.getContainerId();
+			NameIDMapper.getInstance().setNameIDMap(containerName, containerID);
+			ContainerManager.getInstance().setContainer(containerID, container);
+		} else {
+			/* Open an existing container. */
+			containerID = NameIDMapper.getInstance()
+					.getNameIDMap(containerName);
+			container = ContainerManager.getInstance()
+					.getContainer(containerID);
+
+			// container.open(openContainerMode);
+		}
+
+		return container;
 	}
 
 	private void getProperties() throws JTFException {
@@ -162,21 +211,11 @@ public class ZSOpenContainer extends JTFCommand {
 	// }
 	// }
 
-	@Override
-	protected String handleSuccessReturn() {
-		return "OK cguid=" + containerID;
-	}
-
-	@Override
-	public String getZSAdapterName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String getZSCommandExecName() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.ZSCommandExecName;
 	}
 
 	public String getContainerName() {

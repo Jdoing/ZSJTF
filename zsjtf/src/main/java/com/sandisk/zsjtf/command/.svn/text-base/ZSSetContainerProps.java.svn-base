@@ -1,0 +1,113 @@
+/*
+ * File: ZSSetContainerProps.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zsjtf.exception.JTFException;
+import com.sandisk.zsjtf.util.ContainerManager;
+
+import com.sandisk.zs.ZSContainer;
+import com.sandisk.zs.exception.ZSContainerException;
+import com.sandisk.zs.exception.ZSException;
+import com.sandisk.zs.type.ContainerProperty;
+import com.sandisk.zs.type.DurabilityLevel;
+
+/**
+ * ZSSetContainerProps command class.
+ *
+ * @author rchen
+ *
+ * args:
+ *   cguid=%u
+ *   fifo_mode=yes|no
+ *   persistent=yes|no
+ *   evicting=yes|no
+ *   writethru=yes|no
+ *   size=%d
+ *   num_shards=%d
+ *   durability_level=ZS_DURABILITY_PERIODIC|ZS_DURABILITY_SW_CRASH_SAFE|ZS_DURABILITY_HW_CRASH_SAFE
+ *
+ * must have: cguid
+ *
+ * return:
+ *   success: OK
+ *   failed: SERVER_ERROR %s | CLIENT_ERROR %s
+ */
+public class ZSSetContainerProps extends JTFCommand
+{
+    /* Command arg list start */
+    private Long containerID;
+    private Boolean isFIFO;
+    private Boolean isPersistent;
+    private Boolean isEvicting;
+    private Boolean isWritethru;
+    private Integer containerSize;
+    private Integer shardNumber;
+    private String dLevel;
+    /* Command arg list end */
+
+    private DurabilityLevel durabilityLevel;
+
+    @Override
+    public String execute()
+    {
+        try {
+            getProperties();
+            getDurabilityLevel();
+            setContainerProps();
+            return handleSuccessReturn();
+        } catch (ZSException e) {
+            return handleServerErrorReturn(e);
+        } catch (JTFException e) {
+            return handleClientErrorReturn(e);
+        }
+    }
+
+    private void getProperties() throws JTFException
+    {
+        containerID = getLongProperty(CGUID, true);
+        containerSize = getIntegerProperty(SIZE, false, SIZE_DEFAULT_VALUE);
+        shardNumber = getIntegerProperty(NUM_SHARDS, false, NUM_SHARDS_DEFAULT_VALUE);
+        isFIFO = getBooleanProperty(FIFO_MODE, false, FIFO_MODE_DEFAULT_VALUE);
+        isPersistent = getBooleanProperty(PERSISTENT, false, PERSISTENT_DEFAULT_VALUE);
+        isEvicting = getBooleanProperty(EVICTING, false, EVICTING_DEFAULT_VALUE);
+        isWritethru = getBooleanProperty(WRITETHRU, false, WRITETHRU_DEFAULT_VALUE);
+        dLevel = getStringProperty(DURABILITY_LEVEL, false, DURABILITY_LEVEL_DEFAULT_VALUE);
+    }
+
+    private void getDurabilityLevel() throws JTFException
+    {
+        if (dLevel.equals("ZS_DURABILITY_SW_CRASH_SAFE")) {
+            durabilityLevel = DurabilityLevel.ZS_DURABILITY_SW_CRASH_SAFE;
+        } else if (dLevel.equals("ZS_DURABILITY_PERIODIC")) {
+            durabilityLevel = DurabilityLevel.ZS_DURABILITY_PERIODIC;
+        } else if (dLevel.equals("ZS_DURABILITY_HW_CRASH_SAFE")) {
+            durabilityLevel = DurabilityLevel.ZS_DURABILITY_HW_CRASH_SAFE;
+        } else {
+            throw new JTFException("Durability level unrecognized");
+        }
+    }
+
+    private void setContainerProps() throws JTFException, ZSContainerException
+    {
+        ZSContainer container = ContainerManager.getInstance().getContainer(containerID);
+        ContainerProperty containerProps = container.getProperties();
+
+        // FIXME: Not change original container prop if not set
+        containerProps.setSize(containerSize);
+        containerProps.setShardNumber(shardNumber);
+        containerProps.setFifoMode(isFIFO);
+        containerProps.setPersistent(isPersistent);
+        containerProps.setEvicting(isEvicting);
+        containerProps.setWritethru(isWritethru);
+        containerProps.setDurabilityLevel(durabilityLevel);
+
+        container.setContainerProperties(containerProps);
+    }
+}

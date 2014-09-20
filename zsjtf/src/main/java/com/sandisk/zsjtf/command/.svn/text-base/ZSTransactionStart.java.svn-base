@@ -1,0 +1,43 @@
+/*
+ * File: ZSWriteObject.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zs.*;
+import com.sandisk.zs.exception.*;
+
+/**
+ * ZSTransactionCommit command class.
+ *
+ * @author yjiang
+ *
+ * args:
+ *
+ * must have:
+ *
+ * return:
+ *   success: OK
+ *   failed: SERVER_ERROR %s|CLIENT_ERROR %s
+ */
+public class ZSTransactionStart extends JTFCommand{
+	
+	public String execute(){
+		try{
+		ZSTransaction t = new ZSTransaction();
+		t.start();
+		return "OK";
+		}
+		catch(ZSException e){
+			return "server fail"+e.toString();
+		}
+		catch(Exception e){
+			return "client fail"+e.toString();
+		}
+	}
+
+}

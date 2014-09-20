@@ -20,10 +20,8 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import com.sandisk.zsjtf.exec.ZSGetRangeExec;
-import com.sandisk.zsjtf.global.ZSAdapter;
-import com.sandisk.zsjtf.global.ZSAdapterFactory;
-import com.sandisk.zsjtf.global.ZSAdapterManger;
+import com.sandisk.zs.type.ContainerProperty;
+import com.sandisk.zsjtf.command.ZSOpenContainer;
 import com.sandisk.zsjtf.global.ZSCommandExec;
 import com.sandisk.zsjtf.global.ZSCommandExecFactory;
 import com.sandisk.zsjtf.util.Log;
@@ -37,24 +35,51 @@ public class JTFServerHandler extends SimpleChannelInboundHandler<String> {
 	public void channelRead0(ChannelHandlerContext ctx, String rawCommand)
 			throws Exception {
 		try {
+			assert rawCommand!=null;
+			
 			Log.logInfo(rawCommand);
-			JTFCommand command = JTFCommandFactory
+			JTFCommand jtfCommand = JTFCommandFactory
 					.generateCommandObject(rawCommand);
 
 			// Command patter: JTFCommand is invoker, ZSCommandExec is command,
 			// ZSAdapter is receiver
-			ZSAdapterManger zsAdapterManager = new ZSAdapterFactory();
+			// ZSAdapterManger zsAdapterManager = new ZSAdapterFactory();
+			//
+			// ZSAdapter zsAdapter = zsAdapterManager.getZSAdapter(command);
 
-			ZSAdapter zsAdapter = zsAdapterManager.getZSAdapter(command);
+			// String ZSCommandExecName = command.getZSCommandExecName();
 
-			String ZSCommandExecName = command.getZSCommandExecName();
+			// ZSCommandExec zsCommandExec =
+			// ZSCommandExecFactory.createZSCommandExec(ZSCommandExecName,
+			// zsAdapter);
 
-			ZSCommandExec zsCommandExec = ZSCommandExecFactory.createZSCommandExec(ZSCommandExecName, zsAdapter);
+			// command.setZSCommandExec(zsCommandExec);
 
-			command.setZSCommandExec(zsCommandExec);
+			// Object zsEntry = command.createZSEntry();
 
-			String retMsg = command.execute();
+			if (jtfCommand.getClass().equals(ZSOpenContainer.class)) {
+				ContainerProperty containerProps = ContainerProperty
+						.getDefaultProperty();
+
+				ZSOpenContainer zsOpenContainer = (ZSOpenContainer) jtfCommand;
+
+				zsOpenContainer.setContainerProperty(containerProps);
+				jtfCommand = zsOpenContainer;
+			}
+
+			ZSCommandExec zsCommandExec = ZSCommandExecFactory
+					.createZSCommandExec(jtfCommand);
+
+			// create receiver which execute JNI
+			Object zsEntry = jtfCommand.createZSEntry();
+			zsCommandExec.setZSEntry(zsEntry);
+
+			jtfCommand.setZSCommandExec(zsCommandExec);
+
+			String retMsg = jtfCommand.execute();
+
 			ctx.writeAndFlush(retMsg);
+
 		} catch (ClassNotFoundException e) {
 			ctx.writeAndFlush("CLIENT_ERROR command not found or not implement yet");
 		}

@@ -1,0 +1,55 @@
+/*
+ * File: ZSFlushCache.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zsjtf.util.MiscUtils;
+import com.sandisk.zsjtf.exception.JTFException;
+
+import com.sandisk.zs.exception.ZSContainerException;
+import com.sandisk.zs.ZSContainer;
+import com.sandisk.zs.ZSClient;
+import com.sandisk.zs.exception.ZSException;
+
+/** 
+ * ZSFlushCache command class.
+ *
+ * @author qyu
+ *
+ * args:
+ *   
+ * must have:
+ *
+ * return:
+ *   success: OK
+ *   failed: SERVER_ERROR %s | CLIENT_ERROR %s
+ */
+public class ZSFlushCache extends JTFCommand
+{
+    public String execute()
+    {
+        try {
+            flushCache();
+            return "OK";
+        } catch (ZSException e) {
+            return "SERVER_ERROR " + e.toString();
+        } catch (JTFException e) {
+            return "CLIENT_ERROR " + e.toString();
+        }
+    }
+
+    private void flushCache() throws ZSException, JTFException
+    {
+        //not finished yet
+        //TODO init ZSClient clinet
+        ZSClient client = ZSClient.getInstance();
+        client.init(MiscUtils.getZSPropFile());
+        client.flushCache();
+    }
+}

@@ -1,0 +1,74 @@
+/*
+ * File: ZSGetContainerStats.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import java.util.LinkedHashMap;
+
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zsjtf.util.ContainerManager;
+import com.sandisk.zsjtf.exception.JTFException;
+
+import com.sandisk.zs.ZSContainer;
+import com.sandisk.zs.exception.ZSContainerException;
+import com.sandisk.zs.type.ZSStatistics;
+
+/**
+ * ZSGetContainerStats command list.
+ *
+ * @author qyu
+ *
+ * args:
+ *   cguid=%u
+ *
+ * must have: cguid
+ *
+ * return:
+ *   success: OK
+ *   num_objs=%d
+ *   used_space=
+ *   failed: SERVER_ERROR %s | CLIENT_ERROR %s
+ */
+public class ZSGetContainerStats extends JTFCommand
+{
+    // Command arg list start
+    private Long containerID;
+    // Command arg list end
+
+    public String execute()
+    {
+        try {
+            getProperties();
+            String stats = getContainerStats();
+            return stats;
+        } catch (ZSContainerException e) {
+            return "SERVER_ERROR " + e.toString();
+        } catch (JTFException e) {
+            return "CLIENT_ERROR " + e.toString();
+        }
+    }
+
+    private void getProperties() throws JTFException
+    {
+        containerID = getLongProperty(CGUID, true);
+    }
+
+    private String getContainerStats() throws JTFException, ZSContainerException
+    {
+        ZSContainer container = ContainerManager.getInstance().getContainer(containerID);
+
+        ZSStatistics cStats = container.getStats();
+        LinkedHashMap<String, Long> containerStats = cStats.getContainerStats();
+
+        //ret
+        String ret = "OK";
+        ret += ("\nnum_objs=" + containerStats.get("num_objs"));
+        ret += ("\nused_space" + containerStats.get("used_space")); 
+        return ret;
+    }
+}

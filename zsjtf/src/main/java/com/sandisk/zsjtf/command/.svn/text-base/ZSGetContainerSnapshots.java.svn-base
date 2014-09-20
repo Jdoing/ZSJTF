@@ -1,0 +1,56 @@
+/*
+ * File: ZSWriteObject.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zsjtf.util.ContainerManager;
+import com.sandisk.zsjtf.exception.JTFException;
+import com.sandisk.zs.ZSContainer;
+import com.sandisk.zs.exception.ZSException;
+
+/**
+ * ZSGetContainerSnapshots command class.
+ *
+ * @author yjiang
+ *
+ * args:
+ *   cguid=%u
+ *
+ * must have: cguid
+ *
+ * return:
+ *   success: OK
+ *   failed: SERVER_ERROR %s|CLIENT_ERROR %s
+ */
+public class ZSGetContainerSnapshots extends JTFCommand {
+
+	private Long cguid;
+
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		try {
+			getProperties();
+
+			ZSContainer container = ContainerManager.getInstance()
+					.getContainer(cguid);
+			container.getSnapshots();
+			return "OK";
+		} catch (ZSException e) {
+			return handleServerErrorReturn(e);
+		} catch (JTFException e) {
+			return handleClientErrorReturn(e);
+		}
+	}
+
+	private void getProperties() throws JTFException {
+		cguid = this.getLongProperty(CGUID, true);
+	}
+
+}

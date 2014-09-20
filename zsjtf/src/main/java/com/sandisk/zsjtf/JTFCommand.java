@@ -5,6 +5,7 @@ import java.util.Properties;
 import com.sandisk.zsjtf.exception.JTFException;
 import com.sandisk.zsjtf.exec.ZSGetRangeExec;
 import com.sandisk.zsjtf.global.ZSCommandExec;
+import com.sandisk.zs.exception.ZSContainerException;
 import com.sandisk.zs.exception.ZSException;
 
 /**
@@ -85,9 +86,7 @@ public abstract class JTFCommand {
 		this.zsCommandExec = zsCommandExec;
 	}
 
-	public abstract String execute();
-
-	public abstract String getZSAdapterName();
+	public abstract String execute() throws Exception;
 
 	public abstract String getZSCommandExecName();
 
@@ -95,6 +94,8 @@ public abstract class JTFCommand {
 //		this.args = args;
 //	}
 
+	public abstract Object createZSEntry() throws ZSContainerException, JTFException, Exception;
+	
 	private  Properties getArgs(String rawCommand) {
 		String[] tokens = rawCommand.split("\\s+");
 		
@@ -109,15 +110,15 @@ public abstract class JTFCommand {
 		return args;
 	}
 	
-	protected String handleSuccessReturn() throws JTFException, ZSException {
+	public String handleSuccessReturn(){
 		return "OK";
 	}
 
-	protected String handleServerErrorReturn(Exception e) {
+	public String handleServerErrorReturn(Exception e) {
 		return "SERVER_ERROR " + e.toString();
 	}
 
-	protected String handleClientErrorReturn(Exception e) {
+	public String handleClientErrorReturn(Exception e) {
 		return "CLIENT_ERROR " + e.toString();
 	}
 

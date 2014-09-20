@@ -1,0 +1,47 @@
+/*
+ * File: ZSWriteObject.java
+ * Author: qyu, rchen, yjiang
+ *
+ * SanDisk Proprietary Material, © Copyright 2014 SanDisk, all rights reserved.
+ * http://www.sandisk.com
+ * THIS IS NOT A CONTRIBUTION.
+ */
+package com.sandisk.zsjtf.command;
+
+import com.sandisk.zsjtf.JTFCommand;
+import com.sandisk.zs.ZSRange;
+import com.sandisk.zs.exception.ZSContainerException;
+
+/**
+ * ZSGetRangeFinish command class.
+ *
+ * @author yjiang
+ *
+ * args:
+ *
+ * must have: 
+ *
+ * return:
+ *   success: OK
+ *   failed: SERVER_ERROR %s|CLIENT_ERROR %s
+ */
+public class ZSGetRangeFinish extends JTFCommand {
+
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+
+		ZSRange range = new ZSRange(ZSGetRange.getCguid());
+		try {
+			range.end();
+			return "OK";
+		} catch (ZSContainerException e) {
+			// TODO Auto-generated catch block
+			return handleServerErrorReturn(e);
+		} catch (Exception e) {
+			return handleClientErrorReturn(e);
+		}
+
+	}
+
+}
