@@ -94,7 +94,7 @@ public abstract class JTFCommand {
 //		this.args = args;
 //	}
 
-	public abstract Object createZSEntry() throws ZSContainerException, JTFException, Exception;
+	public abstract Object getZSEntry() throws ZSContainerException, JTFException, Exception;
 	
 	private  Properties getArgs(String rawCommand) {
 		String[] tokens = rawCommand.split("\\s+");

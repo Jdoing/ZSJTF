@@ -44,7 +44,7 @@ public class TestZSCloseContainer {
 
 			assertNotNull(zsCloseContainer);
 
-			Object object = zsCloseContainer.createZSEntry();
+			Object object = zsCloseContainer.getZSEntry();
 
 			assertNotNull(object);
 

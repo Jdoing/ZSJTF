@@ -289,7 +289,7 @@ public class ZSGetRange extends JTFCommand {
 	}
 
 	@Override
-	public Object createZSEntry() throws Exception {
+	public Object getZSEntry() throws Exception {
 		// TODO Auto-generated method stub
 
 		if ((keybufSize == null) && (databufSize == null) && (startKey == null)

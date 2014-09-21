@@ -83,7 +83,7 @@ public class TestZSOpenContainer {
 
 			zsOpenContainer.setContainerProperty(mockContainerProps);
 
-			Object object = zsOpenContainer.createZSEntry();
+			Object object = zsOpenContainer.getZSEntry();
 
 			if (object instanceof ZSContainer) {
 				this.zsContainer = (ZSContainer) object;

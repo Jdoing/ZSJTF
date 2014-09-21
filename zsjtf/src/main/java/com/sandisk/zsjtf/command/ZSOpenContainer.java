@@ -94,7 +94,7 @@ public class ZSOpenContainer extends JTFCommand {
 		this.containerProps = containerProps;
 	}
 	
-	public Object createZSEntry() throws ZSContainerException, JTFException {
+	public Object getZSEntry() throws ZSContainerException, JTFException {
 		
 		if (openContainerMode == null) {
 			/* Create a new container. */

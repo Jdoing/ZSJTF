@@ -40,7 +40,7 @@ public class TestZSDeleteContainer {
 			zsDeleteContainer = new ZSDeleteContainer(rawCommand);
 			assertNotNull(zsDeleteContainer);
 			
-			Object object = zsDeleteContainer.createZSEntry();
+			Object object = zsDeleteContainer.getZSEntry();
 			
 			assertNotNull(object);
 			assertEquals(ZSContainer.class, object.getClass());

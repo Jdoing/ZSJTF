@@ -71,7 +71,7 @@ public class JTFServerHandler extends SimpleChannelInboundHandler<String> {
 					.createZSCommandExec(jtfCommand);
 
 			// create receiver which execute JNI
-			Object zsEntry = jtfCommand.createZSEntry();
+			Object zsEntry = jtfCommand.getZSEntry();
 			zsCommandExec.setZSEntry(zsEntry);
 
 			jtfCommand.setZSCommandExec(zsCommandExec);
